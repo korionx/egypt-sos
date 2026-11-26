@@ -1,7 +1,7 @@
 // Offline support for طوارئ مصر السريع.
 // Pages: network first (so the live incident card is fresh), cached copy when offline.
 // Static files and Google Fonts: cache first, refreshed in the background.
-const VERSION = "sos-v1";
+const VERSION = "sos-v2";
 const CORE = ["./", "./index.html", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png", "./privacy.html"];
 
 self.addEventListener("install", e => {

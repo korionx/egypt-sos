@@ -35,6 +35,7 @@
   --red:#e0383d; --red-ink:#ffffff; --amber:#f0b45a; --amber-bg:#2e2213; --green:#5fd394; --green-bg:#13281c; --wa:#1f9d58;
   color-scheme:dark}
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%}
 body{margin:0}
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -79,6 +80,15 @@ h2{font-family:var(--font-display);font-size:1.1rem;margin:0 0 10px}
 .group{font-size:.8rem;font-weight:700;color:var(--muted);padding:10px 14px 4px;background:var(--bg);border-top:1px solid var(--line)}
 .group:first-child{border-top:0}
 .pending{display:inline-block;font-size:.7rem;font-weight:700;color:var(--amber);border:1px solid var(--amber);border-radius:6px;padding:0 5px;margin-top:2px}
+.install{background:var(--surface);border:2px solid var(--red);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.install h2{margin:0}
+.install p{margin:0;font-size:.92rem;color:var(--muted)}
+.install ol{margin:0;padding-inline-start:22px}
+.install li{margin-bottom:4px}
+.install .row2{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.btn.inst{background:var(--red);color:var(--red-ink);flex:1;min-width:180px}
+.install .later{font:inherit;font-size:.85rem;background:transparent;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;padding:6px}
+.ios-share{display:inline-block;border:1px solid var(--line);border-radius:6px;padding:0 6px;font-weight:700}
 footer{font-size:.8rem;color:var(--muted)}
 footer a{color:inherit}
 .empty{padding:14px;color:var(--muted)}
@@ -112,6 +122,26 @@ footer a{color:inherit}
       <a class="btn help" id="btn-help" href="#" target="_blank" rel="noopener">محتاج مساعدة</a>
     </div>
     <p class="hint">بيفتح واتساب برسالة جاهزة فيها موقعك على الخريطة (لو سمحت بتحديد الموقع)، وأنت تختار تبعتها لمين.</p>
+  </section>
+
+  <section class="install" id="install" hidden aria-labelledby="h-install">
+    <h2 id="h-install">خلّي الصفحة دي على موبايلك</h2>
+    <div id="inst-android" hidden>
+      <p>تتفتح بضغطة من الشاشة الرئيسية زي أي تطبيق، وتشتغل من غير إنترنت.</p>
+      <div class="row2" style="margin-top:10px">
+        <button type="button" class="btn inst" id="btn-install">نزّلها على الموبايل</button>
+        <button type="button" class="later" data-later>مش دلوقتي</button>
+      </div>
+    </div>
+    <div id="inst-ios" hidden>
+      <p>على الآيفون، من Safari:</p>
+      <ol>
+        <li>اضغط زرار المشاركة <span class="ios-share" aria-hidden="true">⬆︎</span> (تحت في نص الشاشة، أو فوق على الآيباد).</li>
+        <li>انزل واختار «إضافة إلى الشاشة الرئيسية» (<bdi dir="ltr">Add to Home Screen</bdi>).</li>
+        <li>اضغط «إضافة» (<bdi dir="ltr">Add</bdi>). هتلاقي أيقونة «طوارئ مصر» على الشاشة، وتشتغل من غير إنترنت.</li>
+      </ol>
+      <div class="row2"><button type="button" class="later" data-later>تمام، فهمت</button></div>
+    </div>
   </section>
 
   <section class="incident" aria-labelledby="h-inc">
@@ -221,6 +251,31 @@ for(const id of ["btn-safe","btn-help"]){
     });
   });
 }
+
+// Install: Android/Chrome shows a real install button; iPhone shows the Share → Add to Home Screen steps.
+(function(){
+  const box = document.getElementById("install");
+  const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true || document.referrer.startsWith("android-app://");
+  let later = false; try{ later = localStorage.getItem("sos-install-later") === "1"; }catch(_){}
+  if(standalone || later) return;
+  const hide = () => { box.hidden = true; try{ localStorage.setItem("sos-install-later","1"); }catch(_){} };
+  box.querySelectorAll("[data-later]").forEach(b => b.addEventListener("click", hide));
+  const ua = navigator.userAgent;
+  const isIOS = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  if(isIOS){ document.getElementById("inst-ios").hidden = false; box.hidden = false; return; }
+  let deferred = null;
+  window.addEventListener("beforeinstallprompt", e => {
+    e.preventDefault(); deferred = e;
+    document.getElementById("inst-android").hidden = false; box.hidden = false;
+  });
+  document.getElementById("btn-install").addEventListener("click", async () => {
+    if(!deferred) return;
+    deferred.prompt();
+    try{ await deferred.userChoice; }catch(_){}
+    deferred = null; box.hidden = true;
+  });
+  window.addEventListener("appinstalled", () => { box.hidden = true; });
+})();
 
 // Offline: keep the page and numbers available without internet after the first visit.
 if ("serviceWorker" in navigator && window.isSecureContext) {
