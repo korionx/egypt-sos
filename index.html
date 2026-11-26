@@ -86,7 +86,9 @@ h2{font-family:var(--font-display);font-size:1.1rem;margin:0 0 10px}
 .row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-top:1px solid var(--line)}
 .row:first-child{border-top:0}
 .row .name{flex:1;min-width:0}
-.row .name small{display:block;color:var(--muted);font-size:.78rem}
+.row .name small{display:block;color:var(--muted);font-size:.75rem}
+.row .name small a{color:inherit}
+.scam{font-size:.85rem;background:var(--amber-bg);border:1px solid var(--amber);border-radius:10px;padding:8px 12px;margin:10px 0 0}
 .row a.n{font-family:var(--font-display);font-weight:700;font-size:1.2rem;color:var(--red);text-decoration:none;direction:ltr;font-variant-numeric:tabular-nums}
 .row button{font:inherit;font-size:.8rem;background:transparent;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:4px 8px;cursor:pointer}
 .group{font-size:.8rem;font-weight:700;color:var(--muted);padding:10px 14px 4px;background:var(--bg);border-top:1px solid var(--line)}
@@ -186,33 +188,46 @@ footer a{color:inherit}
 
   <section class="dir" aria-labelledby="h-dir">
     <h2 id="h-dir">كل الأرقام</h2>
-    <input id="q" type="search" placeholder="ابحث: غاز، كهرباء، مياه…" autocomplete="off" aria-label="ابحث في الأرقام">
+    <input id="q" type="search" placeholder="ابحث: غاز، بنك، ابتزاز، طفل…" autocomplete="off" aria-label="ابحث في الأرقام">
     <div class="list" id="list"></div>
+    <p class="scam"><strong>لو حد كلمك وقال إنه من البنك:</strong> البنك عمره ما بيطلب الرقم السري أو كود التفعيل اللي بيوصلك في رسالة. اقفل، واتصل إنت بالرقم المكتوب ورا الكارت.</p>
   </section>
 
   <footer>
-    <p>الأرقام اللي عليها علامة «قيد المراجعة» لسه بنأكدها من مصدر رسمي. الأرقام الأربعة الأساسية مؤكدة من إرشادات السفر الرسمية لمصر (تحديث 18 نوفمبر 2026).</p>
+    <p>كل رقم هنا جنبه «المصدر»: موقع الجهة نفسها أو تصريحها الرسمي. اتراجعت كلها يوم 26 نوفمبر 2026. لو لقيت رقم غلط، <a href="https://github.com/korionx/egypt-sos/issues" target="_blank" rel="noopener">بلّغنا هنا</a>.</p>
     <p>خدمة عامة مجانية وبدون إعلانات. بنعدّ الزيارات بس، من غير كوكيز ومن غير ما نعرف إنت مين. <a href="/sos/privacy.html">سياسة الخصوصية</a>.</p>
     <p>مبادرة شخصية من إسلام أسامة، ومش تابعة لأي جهة حكومية.</p>
   </footer>
 </div>
 
 <script>
+// Every number below has an official source (s). Before adding one, find it on the body's own site or its statement in state media.
+// w = WhatsApp number of the same service, also from the source.
 const NUMBERS = [
-  {g:"طوارئ", n:"الإسعاف", d:"123"},
-  {g:"طوارئ", n:"المطافي / الحماية المدنية", d:"180"},
-  {g:"طوارئ", n:"النجدة (الشرطة)", d:"122"},
-  {g:"طوارئ", n:"شرطة السياحة", d:"126"},
-  {g:"مرافق", n:"طوارئ الكهرباء", d:"121", k:"كهربا انقطاع سلك"},
-  {g:"مرافق", n:"طوارئ الغاز الطبيعي", d:"129", k:"تسريب ريحة غاز"},
-  {g:"مرافق", n:"طوارئ المياه", d:"125", k:"ميه كسر ماسورة"},
-  {g:"مرافق", n:"طوارئ الصرف الصحي", d:"175", p:1, k:"مجاري"},
-  {g:"طرق ومرور", n:"شرطة المرور", d:"128", p:1, k:"حادثة عربية"},
-  {g:"طرق ومرور", n:"خدمة الطوارئ على الطرق", d:"0121110000", k:"عطل عربية"},
-  {g:"شكاوى ومساعدة", n:"نجدة الطفل", d:"16000", p:1, k:"أطفال"},
-  {g:"شكاوى ومساعدة", n:"شكاوى المجلس القومي للمرأة", d:"15115", p:1, k:"ست عنف"},
-  {g:"شكاوى ومساعدة", n:"مباحث الإنترنت", d:"108", p:1, k:"ابتزاز اختراق نصب"},
-  {g:"شكاوى ومساعدة", n:"شكاوى مجلس الوزراء", d:"16528", p:1, k:"حكومة"},
+  {g:"طوارئ", n:"الإسعاف", d:"123", s:"https://www.gov.uk/foreign-travel-advice/egypt/getting-help", k:"إسعاف مصاب حادثة"},
+  {g:"طوارئ", n:"المطافي / الحماية المدنية", d:"180", s:"https://moi.gov.eg/home/EmergancyNumber", k:"حريق نار انهيار"},
+  {g:"طوارئ", n:"النجدة (الشرطة)", d:"122", s:"https://moi.gov.eg/home/EmergancyNumber", k:"بوليس سرقة خناقة"},
+  {g:"طوارئ", n:"شرطة السياحة", d:"126", s:"https://www.gov.uk/foreign-travel-advice/egypt/getting-help", k:"سائح أجانب"},
+  {g:"طوارئ", n:"حوادث الطرق السريعة والصحراوية", d:"01221110000", s:"https://moi.gov.eg/home/EmergancyNumber", k:"حادثة عربية مرور دائري طريق"},
+  {g:"طوارئ", n:"الأمن العام", d:"115", s:"https://moi.gov.eg/home/EmergancyNumber", k:"بلطجة مخدرات"},
+  {g:"صحة", n:"طوارئ وزارة الصحة: سرير رعاية، حضانة، أكياس دم", d:"137", s:"https://www.maspero.eg/egypt/2026/03/25/939282/", k:"عناية مركزة حضانة دم مستشفى"},
+  {g:"صحة", n:"الخط الساخن لوزارة الصحة (ومعاه الدعم النفسي)", d:"105", s:"https://www.maspero.eg/egypt/2026/09/20/990801/", k:"شكوى مستشفى نفسي اكتئاب انتحار قلق"},
+  {g:"صحة", n:"علاج الإدمان (مجاني وسري، 24 ساعة)", d:"16023", s:"https://www.maspero.eg/egypt/2026/05/26/957758/", k:"مخدرات إدمان"},
+  {g:"صحة", n:"هيئة الدواء: نقص دوا أو شكوى صيدلية", d:"15301", s:"https://english.ahram.org.eg/NewsPrint/406109.aspx", k:"دواء صيدلية علاج"},
+  {g:"غاز وكهرباء ومياه", n:"طوارئ الغاز الطبيعي", d:"129", s:"https://www.shakwa.eg/GCP/Default.aspx", k:"تسريب ريحة غاز"},
+  {g:"غاز وكهرباء ومياه", n:"طوارئ الكهرباء", d:"121", s:"https://eehc.gov.eg/CMSEehc/en/contact-us/contact-us/", k:"كهربا انقطاع سلك ماس"},
+  {g:"غاز وكهرباء ومياه", n:"المياه (والصرف الصحي برا القاهرة والإسكندرية)", d:"125", s:"https://www.hcww.com.eg/faq-items/", k:"ميه كسر ماسورة مجاري"},
+  {g:"غاز وكهرباء ومياه", n:"الصرف الصحي: القاهرة والإسكندرية", d:"175", s:"https://www.hcww.com.eg/faq-items/", k:"مجاري طفح"},
+  {g:"نصب وفلوس", n:"مباحث الإنترنت: ابتزاز، اختراق، نصب أونلاين", d:"108", s:"https://moi.gov.eg/home/EmergancyNumber", k:"ابتزاز اختراق هاكر نصب فيسبوك واتساب"},
+  {g:"نصب وفلوس", n:"البنك الأهلي: وقف الكارت أو عملية غريبة", d:"19623", s:"https://www.nbe.com.eg/NBE/E/#/EN/ContactUs", k:"بنك فيزا كارت سرقة"},
+  {g:"نصب وفلوس", n:"بنك مصر: وقف الكارت أو عملية غريبة", d:"19888", s:"https://banquemisr.com/en/CONTACT-US/Call-Center", k:"بنك فيزا كارت سرقة"},
+  {g:"نصب وفلوس", n:"بنك CIB: وقف الكارت أو عملية غريبة", d:"19666", s:"https://www.cibeg.com/en/personal/ways-to-bank/phone-banking", k:"بنك فيزا كارت سرقة التجاري الدولي"},
+  {g:"نصب وفلوس", n:"البنك المركزي (لو البنك ما حلّش مشكلتك)", d:"16777", s:"https://www.cbe.org.eg/en/contact-us", k:"بنك شكوى فلوس"},
+  {g:"حماية ومساعدة", n:"نجدة الطفل (24 ساعة)", d:"16000", s:"https://www.maspero.eg/women-and-beauty/2026/03/21/938364/", k:"أطفال طفل عنف", w:"01102121600"},
+  {g:"حماية ومساعدة", n:"المجلس القومي للمرأة (9 الصبح لـ 9 بالليل)", d:"15115", s:"https://ncw.gov.eg/Page/385/%D9%85%D9%83%D8%AA%D8%A8-%D8%B4%D9%83%D8%A7%D9%88%D9%89-%D8%A7%D9%84%D9%85%D8%B1%D8%A3%D8%A9", k:"ست عنف تحرش ابتزاز"},
+  {g:"شكاوى", n:"الشكاوى الحكومية (مجلس الوزراء)", d:"16528", s:"https://www.shakwa.eg/GCP/StaticContent/View.aspx?ID=1", k:"حكومة شكوى"},
+  {g:"شكاوى", n:"حماية المستهلك", d:"19588", s:"https://cpa.gov.eg/ar-EG/%D8%A7%D8%AA%D8%B5%D9%84-%D8%A8%D9%86%D8%A7", k:"محل نصب فاتورة سعر"},
+  {g:"شكاوى", n:"شكاوى الموبايل والإنترنت (تنظيم الاتصالات)", d:"155", s:"https://www.tra.gov.eg/wp-content/uploads/2020/11/Final-CRPC-2017.pdf", k:"شبكة نت فودافون اتصالات أورانج وي"},
 ];
 const list = document.getElementById("list");
 function render(q){
@@ -224,9 +239,15 @@ function render(q){
   for(const x of items){
     if(x.g !== last){ const h=document.createElement("div"); h.className="group"; h.textContent=x.g; list.appendChild(h); last=x.g; }
     const r = document.createElement("div"); r.className="row";
-    r.innerHTML = `<div class="name"><span>${x.n}</span>${x.p?'<br><span class="pending">قيد المراجعة</span>':''}</div>
-      <a class="n" href="tel:${x.d}">${x.d}</a>
-      <button type="button" data-d="${x.d}">نسخ</button>`;
+    const name = document.createElement("div"); name.className = "name";
+    const t = document.createElement("span"); t.textContent = x.n; name.appendChild(t);
+    const meta = document.createElement("small");
+    const a = document.createElement("a"); a.href = x.s; a.target = "_blank"; a.rel = "noopener"; a.textContent = "المصدر"; meta.appendChild(a);
+    if(x.w){ meta.appendChild(document.createTextNode(" · ")); const wa = document.createElement("a"); wa.href = "https://wa.me/2" + x.w; wa.target = "_blank"; wa.rel = "noopener"; wa.textContent = "واتساب " + x.w; meta.appendChild(wa); }
+    name.appendChild(meta);
+    const num = document.createElement("a"); num.className = "n"; num.href = "tel:" + x.d; num.textContent = x.d;
+    const cp = document.createElement("button"); cp.type = "button"; cp.dataset.d = x.d; cp.textContent = "نسخ";
+    r.append(name, num, cp);
     list.appendChild(r);
   }
 }

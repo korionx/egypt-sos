@@ -2,7 +2,7 @@
 // Pages: network first (so the live incident card is fresh), cached copy when offline.
 // Live incident card (incident.json on GitHub): network first, last saved copy when offline.
 // Static files and Google Fonts: cache first, refreshed in the background.
-const VERSION = "sos-v5";
+const VERSION = "sos-v6";
 const INCIDENT = "https://raw.githubusercontent.com/korionx/egypt-sos/main/incident.json";
 const CORE = ["./", "./index.html", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png", "./privacy.html"];
 
