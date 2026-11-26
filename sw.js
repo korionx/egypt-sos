@@ -1,7 +1,7 @@
 // Offline support for طوارئ مصر السريع.
 // Pages: network first (so the live incident card is fresh), cached copy when offline.
 // Static files and Google Fonts: cache first, refreshed in the background.
-const VERSION = "sos-v3";
+const VERSION = "sos-v4";
 const CORE = ["./", "./index.html", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png", "./privacy.html"];
 
 self.addEventListener("install", e => {
@@ -21,12 +21,13 @@ self.addEventListener("fetch", e => {
   const url = new URL(req.url);
 
   if (req.mode === "navigate") {
+    // One cache entry per page, query ignored: /sos/ and /sos/?source=app (the installed app) share a copy.
+    const key = url.origin + url.pathname;
     e.respondWith(
       fetch(req).then(res => {
-        const copy = res.clone();
-        caches.open(VERSION).then(c => c.put(url.origin + url.pathname, copy)); // each page under its own address, query ignored
+        if (res.ok) { const copy = res.clone(); caches.open(VERSION).then(c => c.put(key, copy)); }
         return res;
-      }).catch(() => caches.match(url.origin + url.pathname).then(r => r || caches.match("./")).then(r => r || caches.match("./index.html")))
+      }).catch(() => caches.match(key).then(r => r || caches.match("./index.html")))
     );
     return;
   }
