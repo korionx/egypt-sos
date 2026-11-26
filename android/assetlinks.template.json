@@ -1,11 +1,13 @@
 [
   {
-    "relation": ["delegate_permission/common.handle_all_urls"],
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
     "target": {
       "namespace": "android_app",
       "package_name": "com.eslamosama.sos",
       "sha256_cert_fingerprints": [
-        "UPLOAD_KEY_SHA256",
+        "D3:72:8B:63:3E:78:5E:C3:51:6A:0B:A6:FE:6B:30:62:0C:40:54:11:7D:F2:94:EF:0F:A7:E5:63:D2:DB:7E:72",
         "PLAY_APP_SIGNING_KEY_SHA256"
       ]
     }

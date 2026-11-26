@@ -26,3 +26,8 @@ For the app to open full screen (no browser bar), the site must serve
 
 - `UPLOAD_KEY_SHA256`: `keytool -list -v -keystore egypt-sos-upload.keystore -alias upload`
 - `PLAY_APP_SIGNING_KEY_SHA256`: Play Console → the app → Test and release → App integrity → App signing.
+
+## Windows build notes
+
+- `minSdkVersion` must be 24 (androidbrowserhelper 2.7.4 requires it).
+- If the JDK path in `~/.bubblewrap/config.json` contains a space, Bubblewrap's signing step fails. Either move the JDK to a path without spaces, or run `gradlew bundleRelease` and sign with `jarsigner` / `apksigner` yourself.
