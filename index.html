@@ -69,6 +69,18 @@ h2{font-family:var(--font-display);font-size:1.1rem;margin:0 0 10px}
 .incident ul{margin:6px 0 0;padding-inline-start:20px}
 .incident li{margin-bottom:4px}
 .incident .time{font-size:.8rem;color:var(--muted);margin-top:8px}
+.incident a{color:inherit}
+.incident .src{font-size:.78rem;color:var(--muted);white-space:nowrap}
+.incident h3{font-family:var(--font-display);font-size:1rem;margin:14px 0 4px}
+.blood{border-radius:12px;padding:12px 14px;margin-top:12px;background:var(--surface);border:2px solid var(--line)}
+.blood[data-need="no"]{border-color:var(--green)}
+.blood[data-need="no"] .bl-head{color:var(--green)}
+.blood[data-need="yes"]{border-color:var(--red)}
+.blood[data-need="yes"] .bl-head{color:var(--red)}
+.blood .bl-head{display:block;font-family:var(--font-display);font-size:1.05rem}
+.blood p{margin:4px 0 0}
+.blood ul{margin:6px 0 0}
+.blood a.n{font-family:var(--font-display);font-weight:700;color:var(--red);text-decoration:none;direction:ltr;unicode-bidi:isolate}
 .dir input{width:100%;font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--fg);margin-bottom:10px}
 .list{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
 .row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-top:1px solid var(--line)}
@@ -94,6 +106,9 @@ footer a{color:inherit}
 .empty{padding:14px;color:var(--muted)}
 @media (prefers-reduced-motion:no-preference){.call,.btn{transition:transform .08s}.call:active,.btn:active{transform:scale(.98)}}
 </style>
+<!-- Vercel Web Analytics: cookieless, anonymous visit counts (see /sos/privacy.html) -->
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 <div class="wrap" dir="rtl" lang="ar">
@@ -144,15 +159,29 @@ footer a{color:inherit}
     </div>
   </section>
 
-  <section class="incident" aria-labelledby="h-inc">
-    <span class="tag">حدث جاري</span>
+  <!-- Live incident card. This HTML is the offline fallback; the script below replaces it with
+       incident.json from github.com/korionx/egypt-sos (each change there is a reviewed pull request). -->
+  <section class="incident" id="incident" aria-labelledby="h-inc">
+    <span class="tag" id="inc-tag">حدث جاري</span>
     <h2 id="h-inc">حريق دائري الوراق (الجيزة)</h2>
-    <ul>
-      <li>المصابين اتنقلوا إلى: <strong>مستشفى إمبابة العام</strong>، <strong>مستشفى الوراق المركزي</strong>، <strong>مستشفى زايد التخصصي</strong>.</li>
-      <li>التبرع بالدم: أقرب مستشفى أو بنك دم ليك.</li>
+    <ul id="inc-items">
+      <li>المصابين اتنقلوا إلى مستشفيات: إمبابة العام، الوراق المركزي، زايد التخصصي، الشيخ زايد آل نهيان، بولاق الدكرور، شبرا العام. <a class="src" href="https://www.cairomubasher.com/256333" target="_blank" rel="noopener">(المصدر)</a></li>
       <li>الطريق الدائري عند الوراق: اتأكد من حالة المرور قبل ما تتحرك، وسيب الطريق للإسعاف والمطافي.</li>
     </ul>
-    <p class="time">آخر تحديث: الخميس 26 نوفمبر 2026، الساعة 4 الفجر بتوقيت القاهرة. المصدر: بيانات وزارة الصحة كما نشرتها الصحف.</p>
+    <div class="blood" id="inc-blood" data-need="no">
+      <strong class="bl-head" id="bl-head">التبرع بالدم: مش محتاجين دلوقتي</strong>
+      <p id="bl-statement">مفيش حاجة لحملات تبرع بالدم دلوقتي. المستشفيات عندها كفاية من أكياس الدم والأدوية والمستلزمات.</p>
+      <ul id="bl-where" hidden></ul>
+      <p class="time" id="bl-src">قالها: د. حسام عبد الغفار، المتحدث الرسمي لوزارة الصحة. <a href="https://www.cairomubasher.com/256333" target="_blank" rel="noopener">المصدر</a>. اتأكدنا منها: الخميس 26 نوفمبر، 8:20 الصبح.</p>
+    </div>
+    <h3>عايز تساعد؟</h3>
+    <ul>
+      <li>ما تروحش مكان الحادث ولا تزحم المستشفيات. الزحمة بتأخر الإسعاف والمصابين.</li>
+      <li>لو اتطلب دم بشكل رسمي، روح بنك دم (خدمات نقل الدم القومية أو الهلال الأحمر)، مش قسم الطوارئ.</li>
+      <li>ما تبعتش فلوس لأي حد بيقول إنه بيجمع للضحايا. ساعد عن طريق جهة رسمية معروفة بس.</li>
+      <li>أي طلب دم على السوشيال: كلّم المستشفى اللي مكتوبة فيه وتأكد قبل ما تتحرك أو تنشره.</li>
+    </ul>
+    <p class="time" id="inc-time">آخر تحديث: الخميس 26 نوفمبر 2026، 8:20 الصبح بتوقيت القاهرة. كل معلومة هنا من مصدر رسمي أو منقولة عنه، والمصدر جنبها.</p>
   </section>
 
   <section class="dir" aria-labelledby="h-dir">
@@ -163,7 +192,7 @@ footer a{color:inherit}
 
   <footer>
     <p>الأرقام اللي عليها علامة «قيد المراجعة» لسه بنأكدها من مصدر رسمي. الأرقام الأربعة الأساسية مؤكدة من إرشادات السفر الرسمية لمصر (تحديث 18 نوفمبر 2026).</p>
-    <p>خدمة عامة مجانية، بدون إعلانات وبدون جمع أي بيانات. <a href="/sos/privacy.html">سياسة الخصوصية</a>.</p>
+    <p>خدمة عامة مجانية وبدون إعلانات. بنعدّ الزيارات بس، من غير كوكيز ومن غير ما نعرف إنت مين. <a href="/sos/privacy.html">سياسة الخصوصية</a>.</p>
     <p>مبادرة شخصية من إسلام أسامة، ومش تابعة لأي جهة حكومية.</p>
   </footer>
 </div>
@@ -275,6 +304,55 @@ for(const id of ["btn-safe","btn-help"]){
     deferred = null; box.hidden = true;
   });
   window.addEventListener("appinstalled", () => { box.hidden = true; });
+})();
+
+// Live incident card: incident.json in the public repo. Rendered with textContent only (never HTML).
+// Offline, the service worker returns the last copy it saved; with nothing saved, the HTML above stays.
+(function(){
+  const URL_JSON = "https://raw.githubusercontent.com/korionx/egypt-sos/main/incident.json";
+  const $ = id => document.getElementById(id);
+  const okUrl = u => typeof u === "string" && /^https:\/\/[^\s"<>]+$/.test(u);
+  const fmt = iso => {
+    const d = new Date(iso); if (isNaN(d)) return "";
+    try { return new Intl.DateTimeFormat("ar-EG-u-nu-latn", {weekday:"long", day:"numeric", month:"long", hour:"numeric", minute:"2-digit", timeZone:"Africa/Cairo"}).format(d); }
+    catch(_) { return d.toLocaleString(); }
+  };
+  const link = (href, label) => { const a = document.createElement("a"); a.href = href; a.target = "_blank"; a.rel = "noopener"; a.textContent = label; return a; };
+  function render(d){
+    const box = $("incident");
+    if (!d.active) { box.hidden = true; return; }
+    box.hidden = false;
+    if (d.tag) $("inc-tag").textContent = d.tag;
+    if (d.title) $("h-inc").textContent = d.title;
+    const ul = $("inc-items"); ul.textContent = "";
+    for (const it of (d.items || [])) {
+      if (!it || !it.text) continue;
+      const li = document.createElement("li"); li.textContent = it.text + " ";
+      if (okUrl(it.source_url)) { const a = link(it.source_url, "(المصدر)"); a.className = "src"; li.appendChild(a); }
+      ul.appendChild(li);
+    }
+    const h = d.help || {};
+    const need = h.blood_needed === true ? "yes" : h.blood_needed === false ? "no" : "unknown";
+    $("inc-blood").dataset.need = need;
+    $("bl-head").textContent = need === "yes" ? "التبرع بالدم: مطلوب متبرعين" : need === "no" ? "التبرع بالدم: مش محتاجين دلوقتي" : "التبرع بالدم: مفيش طلب رسمي لحد دلوقتي";
+    $("bl-statement").textContent = h.statement || (need === "unknown" ? "استنى لحد ما وزارة الصحة تطلب، وما تروحش المستشفيات من نفسك." : "");
+    const wh = $("bl-where"); wh.textContent = "";
+    for (const w of (need === "yes" ? (h.where || []) : [])) {
+      if (!w || !w.name) continue;
+      const li = document.createElement("li"); li.textContent = w.name + (w.address ? "، " + w.address : "") + " ";
+      if (w.phone && /^[0-9+]{3,15}$/.test(w.phone)) { const a = document.createElement("a"); a.className = "n"; a.href = "tel:" + w.phone; a.textContent = w.phone; li.appendChild(a); }
+      wh.appendChild(li);
+    }
+    wh.hidden = !wh.children.length;
+    const src = $("bl-src"); src.textContent = h.said_by ? "قالها: " + h.said_by + ". " : "";
+    if (okUrl(h.source_url)) { src.appendChild(link(h.source_url, "المصدر")); src.appendChild(document.createTextNode(". ")); }
+    if (h.checked_at) src.appendChild(document.createTextNode("اتأكدنا منها: " + fmt(h.checked_at) + "."));
+    if (d.updated_at) $("inc-time").textContent = "آخر تحديث: " + fmt(d.updated_at) + " بتوقيت القاهرة. كل معلومة هنا من مصدر رسمي أو منقولة عنه، والمصدر جنبها.";
+  }
+  fetch(URL_JSON, {cache: "no-store"})
+    .then(r => r.ok ? r.json() : null)
+    .then(d => { if (d && d.schema === 1) render(d); })
+    .catch(() => {});
 })();
 
 // Offline: keep the page and numbers available without internet after the first visit.
