@@ -25,6 +25,11 @@ It's one static file. Open `index.html` in a browser, or deploy the folder to an
 
 No analytics, no cookies, no server. Your location goes only into the WhatsApp message you choose to send.
 
+## Android
+
+The Play Store app wraps this page. See [`android/`](android/README.md).
+Privacy policy: [`privacy.html`](privacy.html) (live at https://www.eslamosama.com/sos/privacy.html).
+
 ## License
 
 MIT
