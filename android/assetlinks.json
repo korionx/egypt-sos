@@ -1,0 +1,13 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.eslamosama.sos",
+      "sha256_cert_fingerprints": [
+        "BF:4A:16:05:8D:6B:3F:3E:36:14:5A:39:BF:0F:07:0E:CD:38:6B:70:89:47:E2:3E:2D:35:46:CA:47:6F:1D:63",
+        "D3:72:8B:63:3E:78:5E:C3:51:6A:0B:A6:FE:6B:30:62:0C:40:54:11:7D:F2:94:EF:0F:A7:E5:63:D2:DB:7E:72"
+      ]
+    }
+  }
+]
