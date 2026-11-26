@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>طوارئ مصر السريع</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;700&family=Readex+Pro:wght@500;700&display=swap">
+<meta name="description" content="أرقام الطوارئ في مصر بضغطة واحدة، وزرار يطمّن أهلك أو يطلب مساعدتهم على واتساب ومعاه موقعك على الخريطة.">
+<link rel="canonical" href="https://eslamosama.com/sos/">
+<meta property="og:title" content="طوارئ مصر السريع">
+<meta property="og:description" content="أرقام الطوارئ بضغطة واحدة، وطمّن أهلك بموقعك على واتساب.">
+<meta property="og:url" content="https://eslamosama.com/sos/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://eslamosama.com/og/default.png">
+<meta name="theme-color" content="#c4161c">
+<style>
+/* Layout: one narrow phone column, RTL. Call tiles first, then family buttons, then live incident card, then searchable directory. */
+:root{
+  --bg:#f6f3f2; --surface:#ffffff; --fg:#1c1515; --muted:#6b5e5d; --line:#e4dcda;
+  --red:#c4161c; --red-ink:#ffffff; --amber:#9a5b00; --amber-bg:#fff4e0; --green:#11733f; --green-bg:#e6f4ec;
+  --wa:#127c43;
+  --font-display:"Readex Pro","IBM Plex Sans Arabic",Tahoma,sans-serif;
+  --font-body:"IBM Plex Sans Arabic",Tahoma,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141010; --surface:#1f1918; --fg:#f3eceb; --muted:#b3a5a3; --line:#3a302f;
+  --red:#e0383d; --red-ink:#ffffff; --amber:#f0b45a; --amber-bg:#2e2213; --green:#5fd394; --green-bg:#13281c; --wa:#1f9d58;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141010; --surface:#1f1918; --fg:#f3eceb; --muted:#b3a5a3; --line:#3a302f;
+  --red:#e0383d; --red-ink:#ffffff; --amber:#f0b45a; --amber-bg:#2e2213; --green:#5fd394; --green-bg:#13281c; --wa:#1f9d58;
+  color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 40px}
+.wrap{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+header h1{font-family:var(--font-display);font-size:1.6rem;margin:0;line-height:1.25;text-wrap:balance}
+header p{margin:4px 0 0;color:var(--muted);font-size:.95rem}
+h2{font-family:var(--font-display);font-size:1.1rem;margin:0 0 10px}
+.calls{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.call{display:flex;flex-direction:column;align-items:flex-start;gap:2px;background:var(--red);color:var(--red-ink);
+  text-decoration:none;border-radius:14px;padding:14px 16px;min-height:104px;justify-content:space-between}
+.call .num{font-family:var(--font-display);font-size:2.4rem;font-weight:700;line-height:1;font-variant-numeric:tabular-nums;direction:ltr}
+.call .lbl{font-weight:700;font-size:1.05rem}
+.call .sub{font-size:.8rem;opacity:.9}
+.call.secondary{background:var(--surface);color:var(--fg);border:1px solid var(--line)}
+.call.secondary .num{color:var(--red)}
+.call:focus-visible,.btn:focus-visible,input:focus-visible,.row button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.hint{font-size:.82rem;color:var(--muted);margin:8px 0 0}
+.family{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.family label{font-weight:500;font-size:.95rem}
+.family input{width:100%;font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--fg)}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{display:flex;align-items:center;justify-content:center;text-align:center;font:inherit;font-weight:700;font-size:1rem;
+  padding:14px 10px;border-radius:12px;text-decoration:none;border:0;cursor:pointer}
+.btn.safe{background:var(--green-bg);color:var(--green);border:1px solid var(--green)}
+.btn.help{background:var(--wa);color:#fff}
+.incident{background:var(--amber-bg);border:1px solid var(--amber);border-radius:14px;padding:16px}
+.incident .tag{display:inline-block;font-size:.75rem;font-weight:700;color:var(--amber);letter-spacing:.02em;margin-bottom:4px}
+.incident h2{margin-bottom:6px}
+.incident ul{margin:6px 0 0;padding-inline-start:20px}
+.incident li{margin-bottom:4px}
+.incident .time{font-size:.8rem;color:var(--muted);margin-top:8px}
+.dir input{width:100%;font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--fg);margin-bottom:10px}
+.list{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.row .name{flex:1;min-width:0}
+.row .name small{display:block;color:var(--muted);font-size:.78rem}
+.row a.n{font-family:var(--font-display);font-weight:700;font-size:1.2rem;color:var(--red);text-decoration:none;direction:ltr;font-variant-numeric:tabular-nums}
+.row button{font:inherit;font-size:.8rem;background:transparent;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:4px 8px;cursor:pointer}
+.group{font-size:.8rem;font-weight:700;color:var(--muted);padding:10px 14px 4px;background:var(--bg);border-top:1px solid var(--line)}
+.group:first-child{border-top:0}
+.pending{display:inline-block;font-size:.7rem;font-weight:700;color:var(--amber);border:1px solid var(--amber);border-radius:6px;padding:0 5px;margin-top:2px}
+footer{font-size:.8rem;color:var(--muted)}
+footer a{color:inherit}
+.empty{padding:14px;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.call,.btn{transition:transform .08s}.call:active,.btn:active{transform:scale(.98)}}
+</style>
+</head>
+<body>
+<div class="wrap" dir="rtl" lang="ar">
+  <header>
+    <h1>طوارئ مصر السريع</h1>
+    <p>اضغط على الرقم للاتصال. لو الاتصال ما اشتغلش من هنا، الرقم مكتوب كبير، اطلبه بإيدك.</p>
+  </header>
+
+  <section aria-labelledby="h-calls">
+    <h2 id="h-calls" hidden>أرقام الطوارئ الأساسية</h2>
+    <div class="calls">
+      <a class="call" href="tel:123"><span class="lbl">إسعاف</span><span class="num">123</span><span class="sub">إصابة أو حالة خطرة</span></a>
+      <a class="call" href="tel:180"><span class="lbl">مطافي / حماية مدنية</span><span class="num">180</span><span class="sub">حريق أو انهيار</span></a>
+      <a class="call" href="tel:122"><span class="lbl">النجدة (الشرطة)</span><span class="num">122</span><span class="sub">خطر أو جريمة</span></a>
+      <a class="call secondary" href="tel:126"><span class="lbl">شرطة السياحة</span><span class="num">126</span><span class="sub">للسائحين والأجانب</span></a>
+    </div>
+    <p class="hint">في حريق: ابعد عن مكان النار والدخان الأول، وبعدها اتصل. ما تقفش تصوّر.</p>
+  </section>
+
+  <section class="family" aria-labelledby="h-family">
+    <h2 id="h-family">طمّن أهلك أو اطلب مساعدتهم</h2>
+    <label for="where">أنت فين دلوقتي؟ (اختياري)</label>
+    <input id="where" type="text" placeholder="مثلاً: الدائري عند نفق الوراق" autocomplete="off">
+    <div class="btns">
+      <a class="btn safe" id="btn-safe" href="#" target="_blank" rel="noopener">أنا بخير ✓</a>
+      <a class="btn help" id="btn-help" href="#" target="_blank" rel="noopener">محتاج مساعدة</a>
+    </div>
+    <p class="hint">بيفتح واتساب برسالة جاهزة فيها موقعك على الخريطة (لو سمحت بتحديد الموقع)، وأنت تختار تبعتها لمين.</p>
+  </section>
+
+  <section class="incident" aria-labelledby="h-inc">
+    <span class="tag">حدث جاري</span>
+    <h2 id="h-inc">حريق دائري الوراق (الجيزة)</h2>
+    <ul>
+      <li>المصابين اتنقلوا إلى: <strong>مستشفى إمبابة العام</strong>، <strong>مستشفى الوراق المركزي</strong>، <strong>مستشفى زايد التخصصي</strong>.</li>
+      <li>التبرع بالدم: أقرب مستشفى أو بنك دم ليك.</li>
+      <li>الطريق الدائري عند الوراق: اتأكد من حالة المرور قبل ما تتحرك، وسيب الطريق للإسعاف والمطافي.</li>
+    </ul>
+    <p class="time">آخر تحديث: الخميس 26 نوفمبر 2026، الساعة 4 الفجر بتوقيت القاهرة. المصدر: بيانات وزارة الصحة كما نشرتها الصحف.</p>
+  </section>
+
+  <section class="dir" aria-labelledby="h-dir">
+    <h2 id="h-dir">كل الأرقام</h2>
+    <input id="q" type="search" placeholder="ابحث: غاز، كهرباء، مياه…" autocomplete="off" aria-label="ابحث في الأرقام">
+    <div class="list" id="list"></div>
+  </section>
+
+  <footer>
+    <p>الأرقام اللي عليها علامة «قيد المراجعة» لسه بنأكدها من مصدر رسمي. الأرقام الأربعة الأساسية مؤكدة من إرشادات السفر الرسمية لمصر (تحديث 18 نوفمبر 2026).</p>
+    <p>خدمة عامة مجانية، بدون إعلانات وبدون جمع أي بيانات.</p>
+  </footer>
+</div>
+
+<script>
+const NUMBERS = [
+  {g:"طوارئ", n:"الإسعاف", d:"123"},
+  {g:"طوارئ", n:"المطافي / الحماية المدنية", d:"180"},
+  {g:"طوارئ", n:"النجدة (الشرطة)", d:"122"},
+  {g:"طوارئ", n:"شرطة السياحة", d:"126"},
+  {g:"مرافق", n:"طوارئ الكهرباء", d:"121", k:"كهربا انقطاع سلك"},
+  {g:"مرافق", n:"طوارئ الغاز الطبيعي", d:"129", k:"تسريب ريحة غاز"},
+  {g:"مرافق", n:"طوارئ المياه", d:"125", k:"ميه كسر ماسورة"},
+  {g:"مرافق", n:"طوارئ الصرف الصحي", d:"175", p:1, k:"مجاري"},
+  {g:"طرق ومرور", n:"شرطة المرور", d:"128", p:1, k:"حادثة عربية"},
+  {g:"طرق ومرور", n:"خدمة الطوارئ على الطرق", d:"0121110000", k:"عطل عربية"},
+  {g:"شكاوى ومساعدة", n:"نجدة الطفل", d:"16000", p:1, k:"أطفال"},
+  {g:"شكاوى ومساعدة", n:"شكاوى المجلس القومي للمرأة", d:"15115", p:1, k:"ست عنف"},
+  {g:"شكاوى ومساعدة", n:"مباحث الإنترنت", d:"108", p:1, k:"ابتزاز اختراق نصب"},
+  {g:"شكاوى ومساعدة", n:"شكاوى مجلس الوزراء", d:"16528", p:1, k:"حكومة"},
+];
+const list = document.getElementById("list");
+function render(q){
+  q = (q||"").trim();
+  const items = NUMBERS.filter(x => !q || (x.n+" "+x.g+" "+(x.k||"")+" "+x.d).includes(q));
+  list.innerHTML = "";
+  if(!items.length){ list.innerHTML = '<div class="empty">مفيش رقم بالاسم ده. جرّب كلمة تانية، أو اتصل بـ 122.</div>'; return; }
+  let last = "";
+  for(const x of items){
+    if(x.g !== last){ const h=document.createElement("div"); h.className="group"; h.textContent=x.g; list.appendChild(h); last=x.g; }
+    const r = document.createElement("div"); r.className="row";
+    r.innerHTML = `<div class="name"><span>${x.n}</span>${x.p?'<br><span class="pending">قيد المراجعة</span>':''}</div>
+      <a class="n" href="tel:${x.d}">${x.d}</a>
+      <button type="button" data-d="${x.d}">نسخ</button>`;
+    list.appendChild(r);
+  }
+}
+list.addEventListener("click", e => {
+  const b = e.target.closest("button[data-d]"); if(!b) return;
+  const d = b.dataset.d;
+  const done = () => { b.textContent = "اتنسخ"; setTimeout(()=>b.textContent="نسخ",1500); };
+  try{ navigator.clipboard.writeText(d).then(done, ()=>{ b.textContent = d; }); }catch(_){ b.textContent = d; }
+});
+document.getElementById("q").addEventListener("input", e => render(e.target.value));
+render("");
+
+const where = document.getElementById("where");
+let coords = null;
+function waLink(kind){
+  const w = where.value.trim();
+  const map = coords ? " موقعي على الخريطة: https://maps.google.com/?q=" + coords.lat.toFixed(6) + "," + coords.lng.toFixed(6) : "";
+  const msg = kind === "safe"
+    ? "أنا بخير الحمد لله، ما تقلقوش." + (w ? " أنا في: " + w + "." : "") + map
+    : "محتاج مساعدة دلوقتي." + (w ? " أنا في: " + w + "." : (coords ? "" : " كلموني حالاً.")) + map;
+  return "https://wa.me/?text=" + encodeURIComponent(msg);
+}
+function refresh(){ document.getElementById("btn-safe").href = waLink("safe"); document.getElementById("btn-help").href = waLink("help"); }
+where.addEventListener("input", refresh); refresh();
+
+// GPS: works when the page is opened directly (its own website). Inside an embedded frame the browser refuses location, so the buttons send the typed place instead.
+const canGps = !!navigator.geolocation && window.top === window && window.isSecureContext;
+function getPos(ms){
+  return new Promise(res => {
+    try{
+      navigator.geolocation.getCurrentPosition(
+        p => res({lat:p.coords.latitude, lng:p.coords.longitude}),
+        () => res(null),
+        {enableHighAccuracy:true, timeout:ms, maximumAge:60000});
+    }catch(_){ res(null); }
+  });
+}
+if(canGps && navigator.permissions){
+  navigator.permissions.query({name:"geolocation"}).then(s => { if(s.state === "granted") getPos(8000).then(c => { if(c){ coords = c; refresh(); } }); }).catch(()=>{});
+}
+for(const id of ["btn-safe","btn-help"]){
+  const b = document.getElementById(id);
+  b.addEventListener("click", e => {
+    if(!canGps || coords) return; // link opens as is
+    e.preventDefault();
+    const label = b.textContent; b.textContent = "بنحدد موقعك…";
+    getPos(5000).then(c => {
+      if(c) coords = c;
+      refresh(); b.textContent = label;
+      location.assign(b.href);
+    });
+  });
+}
+</script>
+</body>
+</html>
