@@ -4,15 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>طوارئ مصر السريع</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;700&family=Readex+Pro:wght@500;700&display=swap">
 <meta name="description" content="أرقام الطوارئ في مصر بضغطة واحدة، وزرار يطمّن أهلك أو يطلب مساعدتهم على واتساب ومعاه موقعك على الخريطة.">
-<link rel="canonical" href="https://eslamosama.com/sos/">
+<link rel="canonical" href="https://www.eslamosama.com/sos/">
 <meta property="og:title" content="طوارئ مصر السريع">
 <meta property="og:description" content="أرقام الطوارئ بضغطة واحدة، وطمّن أهلك بموقعك على واتساب.">
-<meta property="og:url" content="https://eslamosama.com/sos/">
+<meta property="og:url" content="https://www.eslamosama.com/sos/">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://eslamosama.com/og/default.png">
+<meta property="og:image" content="https://www.eslamosama.com/og/default.png">
 <meta name="theme-color" content="#c4161c">
 <link rel="manifest" href="/sos/manifest.webmanifest">
 <link rel="icon" href="/sos/icons/icon-192.png" type="image/png">
@@ -23,8 +21,8 @@
   --bg:#f6f3f2; --surface:#ffffff; --fg:#1c1515; --muted:#6b5e5d; --line:#e4dcda;
   --red:#c4161c; --red-ink:#ffffff; --amber:#9a5b00; --amber-bg:#fff4e0; --green:#11733f; --green-bg:#e6f4ec;
   --wa:#127c43;
-  --font-display:"Readex Pro","IBM Plex Sans Arabic",Tahoma,sans-serif;
-  --font-body:"IBM Plex Sans Arabic",Tahoma,"Segoe UI",sans-serif;
+  --font-display:system-ui,Tahoma,"Segoe UI",sans-serif;
+  --font-body:system-ui,Tahoma,"Segoe UI",sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#141010; --surface:#1f1918; --fg:#f3eceb; --muted:#b3a5a3; --line:#3a302f;
@@ -86,7 +84,9 @@ h2{font-family:var(--font-display);font-size:1.1rem;margin:0 0 10px}
 .row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-top:1px solid var(--line)}
 .row:first-child{border-top:0}
 .row .name{flex:1;min-width:0}
-.row .name small{display:block;color:var(--muted);font-size:.78rem}
+.row .name small{display:block;color:var(--muted);font-size:.75rem}
+.row .name small a{color:inherit}
+.scam{font-size:.85rem;background:var(--amber-bg);border:1px solid var(--amber);border-radius:10px;padding:8px 12px;margin:10px 0 0}
 .row a.n{font-family:var(--font-display);font-weight:700;font-size:1.2rem;color:var(--red);text-decoration:none;direction:ltr;font-variant-numeric:tabular-nums}
 .row button{font:inherit;font-size:.8rem;background:transparent;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:4px 8px;cursor:pointer}
 .group{font-size:.8rem;font-weight:700;color:var(--muted);padding:10px 14px 4px;background:var(--bg);border-top:1px solid var(--line)}
@@ -105,6 +105,13 @@ footer{font-size:.8rem;color:var(--muted)}
 footer a{color:inherit}
 .empty{padding:14px;color:var(--muted)}
 @media (prefers-reduced-motion:no-preference){.call,.btn{transition:transform .08s}.call:active,.btn:active{transform:scale(.98)}}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
+.row a.n,.row button,.row small a,summary,#cancel-gps{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+.row a.n{min-width:72px}.row small a{padding:4px}.row button{min-width:44px}
+.gps-option{display:flex;align-items:center;gap:8px;min-height:44px}.family .gps-option input{width:24px;height:24px;margin:0}
+#cancel-gps{font:inherit;background:transparent;color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:4px 12px;margin-top:8px}
+summary{cursor:pointer;justify-content:flex-start}.hint a{color:inherit}
+@media(max-width:360px){.row{flex-wrap:wrap}.row .name{flex-basis:100%}.call{padding:12px}.wrap{gap:16px}}
 </style>
 <!-- Vercel Web Analytics: cookieless, anonymous visit counts (see /sos/privacy.html) -->
 <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
@@ -114,7 +121,7 @@ footer a{color:inherit}
 <div class="wrap" dir="rtl" lang="ar">
   <header>
     <h1>طوارئ مصر السريع</h1>
-    <p>اضغط على الرقم للاتصال. لو الاتصال ما اشتغلش من هنا، الرقم مكتوب كبير، اطلبه بإيدك.</p>
+    <p>اضغط الرقم لفتح الاتصال، أو اطلبه بإيدك.</p>
   </header>
 
   <section aria-labelledby="h-calls">
@@ -125,24 +132,45 @@ footer a{color:inherit}
       <a class="call" href="tel:122"><span class="lbl">النجدة (الشرطة)</span><span class="num">122</span><span class="sub">خطر أو جريمة</span></a>
       <a class="call secondary" href="tel:126"><span class="lbl">شرطة السياحة</span><span class="num">126</span><span class="sub">للسائحين والأجانب</span></a>
     </div>
+    <p class="hint"><a href="sources.html">مصادر الأرقام</a> · مبادرة مستقلة، مش جهة حكومية.</p>
     <p class="hint">في حريق: ابعد عن مكان النار والدخان الأول، وبعدها اتصل. ما تقفش تصوّر.</p>
   </section>
 
   <section class="family" aria-labelledby="h-family">
     <h2 id="h-family">طمّن أهلك أو اطلب مساعدتهم</h2>
     <label for="where">أنت فين دلوقتي؟ (اختياري)</label>
-    <input id="where" type="text" placeholder="مثلاً: الدائري عند نفق الوراق" autocomplete="off">
+    <input id="where" maxlength="300" type="text" placeholder="مثلاً: اسم الشارع وأقرب علامة" autocomplete="off">
     <div class="btns">
-      <a class="btn safe" id="btn-safe" href="#" target="_blank" rel="noopener">أنا بخير ✓</a>
-      <a class="btn help" id="btn-help" href="#" target="_blank" rel="noopener">محتاج مساعدة</a>
+      <a class="btn safe" id="btn-safe" href="https://wa.me/?text=أنا%20بخير%20الحمد%20لله">أنا بخير ✓</a>
+      <a class="btn help" id="btn-help" href="https://wa.me/?text=محتاج%20مساعدة%20دلوقتي.%20كلموني%20حالاً">محتاج مساعدة</a>
     </div>
-    <p class="hint">بيفتح واتساب برسالة جاهزة فيها موقعك على الخريطة (لو سمحت بتحديد الموقع)، وأنت تختار تبعتها لمين.</p>
+    <label class="gps-option" hidden id="gps-option"><input type="checkbox" id="include-location"> أضف موقعي الحالي (اختياري)</label>
+    <p class="hint">بيفتح واتساب برسالة تراجعها وتختار تبعتها لمين. لو أضفت موقعك، الرابط بيوصّله لواتساب عند الفتح.</p>
+    <div id="gps-wait" hidden><p role="status">بنحدد موقعك… بحد أقصى ٤ ثواني.</p><button class="btn safe" id="skip-gps" type="button">افتح واتساب من غير موقع</button><button type="button" id="cancel-gps">إلغاء</button></div>
+  </section>
+
+  <section class="incident" id="incident" hidden aria-labelledby="h-inc">
+    <span class="tag" id="inc-tag"></span><h2 id="h-inc"></h2>
+    <p class="time" id="inc-time"></p>
+    <details id="inc-details"><summary>عرض المعلومات ومصادرها</summary><ul id="inc-items"></ul>
+      <div class="blood" id="inc-blood"><strong id="bl-head"></strong><p id="bl-statement"></p><p class="time" id="bl-src"></p><ul id="bl-where"></ul></div>
+    </details>
+  </section>
+
+  <section class="dir" aria-labelledby="h-dir">
+    <h2 id="h-dir">كل الأرقام</h2>
+    <input hidden id="q" type="search" placeholder="ابحث: غاز، بنك، ابتزاز، طفل…" autocomplete="off" aria-label="ابحث في الأرقام">
+    <!-- DIRECTORY_START -->
+<div class="list" id="list"><div class="group">طوارئ</div><div class="row" data-search="الإسعاف 123 إسعاف مصاب حادثة"><div class="name"><span>الإسعاف</span><small><a href="https://www.gov.uk/foreign-travel-advice/egypt/getting-help" target="_blank" rel="noopener noreferrer">المصدر</a></small></div><a class="n" href="tel:123" aria-label="اتصل: الإسعاف 123">123</a><button hidden type="button" data-d="123" aria-label="انسخ رقم الإسعاف">نسخ</button></div><div class="row" data-search="المطافي / الحماية المدنية 180 حريق نار انهيار"><div class="name"><span>المطافي / الحماية المدنية</span><small><a href="https://moi.gov.eg/home/EmergancyNumber" target="_blank" rel="noopener noreferrer">المصدر</a></small></div><a class="n" href="tel:180" aria-label="اتصل: المطافي / الحماية المدنية 180">180</a><button hidden type="button" data-d="180" aria-label="انسخ رقم المطافي / الحماية المدنية">نسخ</button></div><div class="row" data-search="النجدة (الشرطة) 122 بوليس سرقة خناقة"><div class="name"><span>النجدة (الشرطة)</span><small><a href="https://moi.gov.eg/home/EmergancyNumber" target="_blank" rel="noopener noreferrer">المصدر</a></small></div><a class="n" href="tel:122" aria-label="اتصل: النجدة (الشرطة) 122">122</a><button hidden type="button" data-d="122" aria-label="انسخ رقم النجدة (الشرطة)">نسخ</button></div><div class="row" data-search="شرطة السياحة 126 سائح أجانب"><div class="name"><span>شرطة السياحة</span><small><a href="https://www.gov.uk/foreign-travel-advice/egypt/getting-help" target="_blank" rel="noopener noreferrer">المصدر</a></small></div><a class="n" href="tel:126" aria-label="اتصل: شرطة السياحة 126">126</a><button hidden type="button" data-d="126" aria-label="انسخ رقم شرطة السياحة">نسخ</button></div><div class="row" data-search="حوادث الطرق السريعة والصحراوية 01221110000 حادثة عربية مرور دائري طريق"><div class="name"><span>حوادث الطرق السريعة والصحراوية</span><small><a href="https://moi.gov.eg/home/EmergancyNumber" target="_blank" rel="noopener noreferrer">المصدر</a></small></div><a class="n" href="tel:01221110000" aria-label="اتصل: حوادث الطرق السريعة والصحراوية 01221110000">01221110000</a><button hidden type="button" data-d="01221110000" aria-label="انسخ رقم حوادث الطرق السريعة والصحراوية">نسخ</button></div><div class="row" data-search="الأمن العام 115 بلطجة مخدرات"><div class="name"><span>الأمن العام</span><small><a href="https://moi.gov.eg/home/EmergancyNumber" target="_blank" rel="noopener noreferrer">المصدر</a></small></div><a class="n" href="tel:115" aria-label="اتصل: الأمن العام 115">115</a><button hidden type="button" data-d="115" aria-label="انسخ رقم الأمن العام">نسخ</button></div><div class="group">صحة</div><div class="row" data-search="طوارئ وزارة الصحة: سرير رعاية، حضانة، أكياس دم 137 عناية مركزة حضانة دم مستشفى"><div class="name"><span>طوارئ وزارة الصحة: سرير رعاية، حضانة، أكياس دم</span><small><a href="https://www.maspero.eg/egypt/2026/03/25/939282/" target="_blank" rel="noopener noreferrer">المصدر</a></small></div><a class="n" href="tel:137" aria-label="اتصل: طوارئ وزارة الصحة: سرير رعاية، حضانة، أكياس دم 137">137</a><button hidden type="button" data-d="137" aria-label="انسخ رقم طوارئ وزارة الصحة: سرير رعاية، حضانة، أكياس دم">نسخ</button></div><div class="row" data-search="الخط الساخن لوزارة الصحة 105 شكوى مستشفى صحة"><div class="name"><span>الخط الساخن لوزارة الصحة</span><small><a href="https://www.maspero.eg/egypt/2026/09/20/990801/" target="_blank" rel="noopener noreferrer">المصدر</a></small></div><a class="n" href="tel:105" aria-label="اتصل: الخط الساخن لوزارة الصحة 105">105</a><button hidden type="button" data-d="105" aria-label="انسخ رقم الخط الساخن لوزارة الصحة">نسخ</button></div><div class="row" data-search="علاج الإدمان (مجاني وسري، 24 ساعة) 16023 مخدرات إدمان"><div class="name"><span>علاج الإدمان (مجاني وسري، 24 ساعة)</span><small><a href="https://www.maspero.eg/egypt/2026/05/26/957758/" target="_blank" rel="noopener noreferrer">المصدر</a></small></div><a class="n" href="tel:16023" aria-label="اتصل: علاج الإدمان (مجاني وسري، 24 ساعة) 16023">16023</a><button hidden type="button" data-d="16023" aria-label="انسخ رقم علاج الإدمان (مجاني وسري، 24 ساعة)">نسخ</button></div><div class="row" data-search="هيئة الدواء: نقص دوا أو شكوى صيدلية 15301 دواء صيدلية علاج"><div class="name"><span>هيئة الدواء: نقص دوا أو شكوى صيدلية</span><small><a href="https://www.edaegypt.gov.eg/en/about-us/contact-us/" target="_blank" rel="noopener noreferrer">المصدر</a></small></div><a class="n" href="tel:15301" aria-label="اتصل: هيئة الدواء: نقص دوا أو شكوى صيدلية 15301">15301</a><button hidden type="button" data-d="15301" aria-label="انسخ رقم هيئة الدواء: نقص دوا أو شكوى صيدلية">نسخ</button></div><div class="group">غاز وكهرباء ومياه</div><div class="row" data-search="طوارئ الغاز الطبيعي 129 تسريب ريحة غاز"><div class="name"><span>طوارئ الغاز الطبيعي</span><small><a href="https://www.shakwa.eg/GCP/Default.aspx" target="_blank" rel="noopener noreferrer">المصدر</a></small></div><a class="n" href="tel:129" aria-label="اتصل: طوارئ الغاز الطبيعي 129">129</a><button hidden type="button" data-d="129" aria-label="انسخ رقم طوارئ الغاز الطبيعي">نسخ</button></div><div class="row" data-search="طوارئ الكهرباء 121 كهربا انقطاع سلك ماس"><div class="name"><span>طوارئ الكهرباء</span><small><a href="https://eehc.gov.eg/CMSEehc/en/contact-us/contact-us/" target="_blank" rel="noopener noreferrer">المصدر</a></small></div><a class="n" href="tel:121" aria-label="اتصل: طوارئ الكهرباء 121">121</a><button hidden type="button" data-d="121" aria-label="انسخ رقم طوارئ الكهرباء">نسخ</button></div><div class="row" data-search="المياه (والصرف الصحي برا القاهرة والإسكندرية) 125 ميه كسر ماسورة مجاري"><div class="name"><span>المياه (والصرف الصحي برا القاهرة والإسكندرية)</span><small><a href="https://www.hcww.com.eg/faq-items/" target="_blank" rel="noopener noreferrer">المصدر</a></small></div><a class="n" href="tel:125" aria-label="اتصل: المياه (والصرف الصحي برا القاهرة والإسكندرية) 125">125</a><button hidden type="button" data-d="125" aria-label="انسخ رقم المياه (والصرف الصحي برا القاهرة والإسكندرية)">نسخ</button></div><div class="row" data-search="الصرف الصحي: القاهرة والإسكندرية 175 مجاري طفح"><div class="name"><span>الصرف الصحي: القاهرة والإسكندرية</span><small><a href="https://www.hcww.com.eg/faq-items/" target="_blank" rel="noopener noreferrer">المصدر</a></small></div><a class="n" href="tel:175" aria-label="اتصل: الصرف الصحي: القاهرة والإسكندرية 175">175</a><button hidden type="button" data-d="175" aria-label="انسخ رقم الصرف الصحي: القاهرة والإسكندرية">نسخ</button></div><div class="group">نصب وفلوس</div><div class="row" data-search="مباحث الإنترنت: ابتزاز، اختراق، نصب أونلاين 108 ابتزاز اختراق هاكر نصب فيسبوك واتساب"><div class="name"><span>مباحث الإنترنت: ابتزاز، اختراق، نصب أونلاين</span><small><a href="https://moi.gov.eg/home/EmergancyNumber" target="_blank" rel="noopener noreferrer">المصدر</a></small></div><a class="n" href="tel:108" aria-label="اتصل: مباحث الإنترنت: ابتزاز، اختراق، نصب أونلاين 108">108</a><button hidden type="button" data-d="108" aria-label="انسخ رقم مباحث الإنترنت: ابتزاز، اختراق، نصب أونلاين">نسخ</button></div><div class="row" data-search="البنك الأهلي: وقف الكارت أو عملية غريبة 19623 بنك فيزا كارت سرقة"><div class="name"><span>البنك الأهلي: وقف الكارت أو عملية غريبة</span><small><a href="https://www.nbe.com.eg/NBE/E/#/EN/ContactUs" target="_blank" rel="noopener noreferrer">المصدر</a></small></div><a class="n" href="tel:19623" aria-label="اتصل: البنك الأهلي: وقف الكارت أو عملية غريبة 19623">19623</a><button hidden type="button" data-d="19623" aria-label="انسخ رقم البنك الأهلي: وقف الكارت أو عملية غريبة">نسخ</button></div><div class="row" data-search="بنك مصر: وقف الكارت أو عملية غريبة 19888 بنك فيزا كارت سرقة"><div class="name"><span>بنك مصر: وقف الكارت أو عملية غريبة</span><small><a href="https://banquemisr.com/en/CONTACT-US/Call-Center" target="_blank" rel="noopener noreferrer">المصدر</a></small></div><a class="n" href="tel:19888" aria-label="اتصل: بنك مصر: وقف الكارت أو عملية غريبة 19888">19888</a><button hidden type="button" data-d="19888" aria-label="انسخ رقم بنك مصر: وقف الكارت أو عملية غريبة">نسخ</button></div><div class="row" data-search="بنك CIB: وقف الكارت أو عملية غريبة 19666 بنك فيزا كارت سرقة التجاري الدولي"><div class="name"><span>بنك CIB: وقف الكارت أو عملية غريبة</span><small><a href="https://www.cibeg.com/en/personal/ways-to-bank/phone-banking" target="_blank" rel="noopener noreferrer">المصدر</a></small></div><a class="n" href="tel:19666" aria-label="اتصل: بنك CIB: وقف الكارت أو عملية غريبة 19666">19666</a><button hidden type="button" data-d="19666" aria-label="انسخ رقم بنك CIB: وقف الكارت أو عملية غريبة">نسخ</button></div><div class="row" data-search="البنك المركزي المصري 16777 بنك شكوى فلوس"><div class="name"><span>البنك المركزي المصري</span><small><a href="https://www.cbe.org.eg/en/contact-us" target="_blank" rel="noopener noreferrer">المصدر</a></small></div><a class="n" href="tel:16777" aria-label="اتصل: البنك المركزي المصري 16777">16777</a><button hidden type="button" data-d="16777" aria-label="انسخ رقم البنك المركزي المصري">نسخ</button></div><div class="group">حماية ومساعدة</div><div class="row" data-search="نجدة الطفل (24 ساعة) 16000 أطفال طفل عنف"><div class="name"><span>نجدة الطفل (24 ساعة)</span><small><a href="https://www.maspero.eg/women-and-beauty/2026/03/21/938364/" target="_blank" rel="noopener noreferrer">المصدر</a> · <a href="https://wa.me/201102121600" target="_blank" rel="noopener noreferrer">واتساب 01102121600</a></small></div><a class="n" href="tel:16000" aria-label="اتصل: نجدة الطفل (24 ساعة) 16000">16000</a><button hidden type="button" data-d="16000" aria-label="انسخ رقم نجدة الطفل (24 ساعة)">نسخ</button></div><div class="row" data-search="المجلس القومي للمرأة (9 الصبح لـ 9 بالليل) 15115 ست عنف تحرش ابتزاز"><div class="name"><span>المجلس القومي للمرأة (9 الصبح لـ 9 بالليل)</span><small><a href="https://ncw.gov.eg/Page/385/%D9%85%D9%83%D8%AA%D8%A8-%D8%B4%D9%83%D8%A7%D9%88%D9%89-%D8%A7%D9%84%D9%85%D8%B1%D8%A3%D8%A9" target="_blank" rel="noopener noreferrer">المصدر</a></small></div><a class="n" href="tel:15115" aria-label="اتصل: المجلس القومي للمرأة (9 الصبح لـ 9 بالليل) 15115">15115</a><button hidden type="button" data-d="15115" aria-label="انسخ رقم المجلس القومي للمرأة (9 الصبح لـ 9 بالليل)">نسخ</button></div><div class="group">شكاوى</div><div class="row" data-search="الشكاوى الحكومية (مجلس الوزراء) 16528 حكومة شكوى"><div class="name"><span>الشكاوى الحكومية (مجلس الوزراء)</span><small><a href="https://www.shakwa.eg/GCP/StaticContent/View.aspx?ID=1" target="_blank" rel="noopener noreferrer">المصدر</a></small></div><a class="n" href="tel:16528" aria-label="اتصل: الشكاوى الحكومية (مجلس الوزراء) 16528">16528</a><button hidden type="button" data-d="16528" aria-label="انسخ رقم الشكاوى الحكومية (مجلس الوزراء)">نسخ</button></div><div class="row" data-search="حماية المستهلك 19588 محل نصب فاتورة سعر"><div class="name"><span>حماية المستهلك</span><small><a href="https://cpa.gov.eg/ar-EG/%D8%A7%D8%AA%D8%B5%D9%84-%D8%A8%D9%86%D8%A7" target="_blank" rel="noopener noreferrer">المصدر</a></small></div><a class="n" href="tel:19588" aria-label="اتصل: حماية المستهلك 19588">19588</a><button hidden type="button" data-d="19588" aria-label="انسخ رقم حماية المستهلك">نسخ</button></div><div class="row" data-search="شكاوى الموبايل والإنترنت (تنظيم الاتصالات) 155 شبكة نت فودافون اتصالات أورانج وي"><div class="name"><span>شكاوى الموبايل والإنترنت (تنظيم الاتصالات)</span><small><a href="https://mcit.gov.eg/Ar/Media_Center/Latest_News/News/63315" target="_blank" rel="noopener noreferrer">المصدر</a></small></div><a class="n" href="tel:155" aria-label="اتصل: شكاوى الموبايل والإنترنت (تنظيم الاتصالات) 155">155</a><button hidden type="button" data-d="155" aria-label="انسخ رقم شكاوى الموبايل والإنترنت (تنظيم الاتصالات)">نسخ</button></div></div>
+<!-- DIRECTORY_END -->
+<p id="empty" class="empty" hidden role="status">مفيش نتيجة. جرّب اسم الخدمة أو الرقم.</p>
+    <p class="scam"><strong>لو حد كلمك وقال إنه من البنك:</strong> البنك عمره ما بيطلب الرقم السري أو كود التفعيل اللي بيوصلك في رسالة. اقفل، واتصل إنت بالرقم المكتوب ورا الكارت.</p>
   </section>
 
   <section class="install" id="install" hidden aria-labelledby="h-install">
     <h2 id="h-install">خلّي الصفحة دي على موبايلك</h2>
     <div id="inst-android" hidden>
-      <p>تتفتح بضغطة من الشاشة الرئيسية زي أي تطبيق، وتشتغل من غير إنترنت.</p>
+      <p>تتفتح بضغطة من الشاشة الرئيسية زي أي تطبيق، وأرقامها تفضل متاحة بدون إنترنت بعد أول تحميل؛ الاتصال محتاج شبكة، وواتساب محتاج إنترنت.</p>
       <div class="row2" style="margin-top:10px">
         <button type="button" class="btn inst" id="btn-install">نزّلها على الموبايل</button>
         <button type="button" class="later" data-later>مش دلوقتي</button>
@@ -153,212 +181,20 @@ footer a{color:inherit}
       <ol>
         <li>اضغط زرار المشاركة <span class="ios-share" aria-hidden="true">⬆︎</span> (تحت في نص الشاشة، أو فوق على الآيباد).</li>
         <li>انزل واختار «إضافة إلى الشاشة الرئيسية» (<bdi dir="ltr">Add to Home Screen</bdi>).</li>
-        <li>اضغط «إضافة» (<bdi dir="ltr">Add</bdi>). هتلاقي أيقونة «طوارئ مصر» على الشاشة، وتشتغل من غير إنترنت.</li>
+        <li>اضغط «إضافة» (<bdi dir="ltr">Add</bdi>). هتلاقي أيقونة «طوارئ مصر» على الشاشة، وأرقامها تفضل متاحة بدون إنترنت بعد أول تحميل؛ الاتصال محتاج شبكة، وواتساب محتاج إنترنت.</li>
       </ol>
       <div class="row2"><button type="button" class="later" data-later>تمام، فهمت</button></div>
     </div>
   </section>
 
-  <!-- Live incident card. This HTML is the offline fallback; the script below replaces it with
-       incident.json from github.com/korionx/egypt-sos (each change there is a reviewed pull request). -->
-  <section class="incident" id="incident" aria-labelledby="h-inc">
-    <span class="tag" id="inc-tag">حدث جاري</span>
-    <h2 id="h-inc">حريق دائري الوراق (الجيزة)</h2>
-    <ul id="inc-items">
-      <li>المصابين اتنقلوا إلى مستشفيات: إمبابة العام، الوراق المركزي، زايد التخصصي، الشيخ زايد آل نهيان، بولاق الدكرور، شبرا العام. <a class="src" href="https://www.cairomubasher.com/256333" target="_blank" rel="noopener">(المصدر)</a></li>
-      <li>الطريق الدائري عند الوراق: اتأكد من حالة المرور قبل ما تتحرك، وسيب الطريق للإسعاف والمطافي.</li>
-    </ul>
-    <div class="blood" id="inc-blood" data-need="no">
-      <strong class="bl-head" id="bl-head">التبرع بالدم: مش محتاجين دلوقتي</strong>
-      <p id="bl-statement">مفيش حاجة لحملات تبرع بالدم دلوقتي. المستشفيات عندها كفاية من أكياس الدم والأدوية والمستلزمات.</p>
-      <ul id="bl-where" hidden></ul>
-      <p class="time" id="bl-src">قالها: د. حسام عبد الغفار، المتحدث الرسمي لوزارة الصحة. <a href="https://www.cairomubasher.com/256333" target="_blank" rel="noopener">المصدر</a>. اتأكدنا منها: الخميس 26 نوفمبر، 8:20 الصبح.</p>
-    </div>
-    <h3>عايز تساعد؟</h3>
-    <ul>
-      <li>ما تروحش مكان الحادث ولا تزحم المستشفيات. الزحمة بتأخر الإسعاف والمصابين.</li>
-      <li>لو اتطلب دم بشكل رسمي، روح بنك دم (خدمات نقل الدم القومية أو الهلال الأحمر)، مش قسم الطوارئ.</li>
-      <li>ما تبعتش فلوس لأي حد بيقول إنه بيجمع للضحايا. ساعد عن طريق جهة رسمية معروفة بس.</li>
-      <li>أي طلب دم على السوشيال: كلّم المستشفى اللي مكتوبة فيه وتأكد قبل ما تتحرك أو تنشره.</li>
-    </ul>
-    <p class="time" id="inc-time">آخر تحديث: الخميس 26 نوفمبر 2026، 8:20 الصبح بتوقيت القاهرة. كل معلومة هنا من مصدر رسمي أو منقولة عنه، والمصدر جنبها.</p>
-  </section>
-
-  <section class="dir" aria-labelledby="h-dir">
-    <h2 id="h-dir">كل الأرقام</h2>
-    <input id="q" type="search" placeholder="ابحث: غاز، كهرباء، مياه…" autocomplete="off" aria-label="ابحث في الأرقام">
-    <div class="list" id="list"></div>
-  </section>
-
   <footer>
-    <p>الأرقام اللي عليها علامة «قيد المراجعة» لسه بنأكدها من مصدر رسمي. الأرقام الأربعة الأساسية مؤكدة من إرشادات السفر الرسمية لمصر (تحديث 18 نوفمبر 2026).</p>
-    <p>خدمة عامة مجانية وبدون إعلانات. بنعدّ الزيارات بس، من غير كوكيز ومن غير ما نعرف إنت مين. <a href="/sos/privacy.html">سياسة الخصوصية</a>.</p>
+    <p>كل رقم هنا جنبه «المصدر»: موقع الجهة نفسها أو تصريحها الرسمي. اتراجعت المصادر يوم 28 نوفمبر 2026. النشر الرسمي مش ضمان إن الخط متاح في كل لحظة. لو لقيت رقم غلط، <a href="https://github.com/korionx/egypt-sos/issues" target="_blank" rel="noopener">بلّغنا هنا</a>.</p>
+    <p>خدمة عامة مجانية وبدون إعلانات. بنستخدم إحصائيات زيارات مجمّعة بدون كوكيز. مش بنسجل ضغطات الاتصال أو محتوى رسائلك. <a href="privacy.html">سياسة الخصوصية</a>.</p>
     <p>مبادرة شخصية من إسلام أسامة، ومش تابعة لأي جهة حكومية.</p>
   </footer>
 </div>
 
-<script>
-const NUMBERS = [
-  {g:"طوارئ", n:"الإسعاف", d:"123"},
-  {g:"طوارئ", n:"المطافي / الحماية المدنية", d:"180"},
-  {g:"طوارئ", n:"النجدة (الشرطة)", d:"122"},
-  {g:"طوارئ", n:"شرطة السياحة", d:"126"},
-  {g:"مرافق", n:"طوارئ الكهرباء", d:"121", k:"كهربا انقطاع سلك"},
-  {g:"مرافق", n:"طوارئ الغاز الطبيعي", d:"129", k:"تسريب ريحة غاز"},
-  {g:"مرافق", n:"طوارئ المياه", d:"125", k:"ميه كسر ماسورة"},
-  {g:"مرافق", n:"طوارئ الصرف الصحي", d:"175", p:1, k:"مجاري"},
-  {g:"طرق ومرور", n:"شرطة المرور", d:"128", p:1, k:"حادثة عربية"},
-  {g:"طرق ومرور", n:"خدمة الطوارئ على الطرق", d:"0121110000", k:"عطل عربية"},
-  {g:"شكاوى ومساعدة", n:"نجدة الطفل", d:"16000", p:1, k:"أطفال"},
-  {g:"شكاوى ومساعدة", n:"شكاوى المجلس القومي للمرأة", d:"15115", p:1, k:"ست عنف"},
-  {g:"شكاوى ومساعدة", n:"مباحث الإنترنت", d:"108", p:1, k:"ابتزاز اختراق نصب"},
-  {g:"شكاوى ومساعدة", n:"شكاوى مجلس الوزراء", d:"16528", p:1, k:"حكومة"},
-];
-const list = document.getElementById("list");
-function render(q){
-  q = (q||"").trim();
-  const items = NUMBERS.filter(x => !q || (x.n+" "+x.g+" "+(x.k||"")+" "+x.d).includes(q));
-  list.innerHTML = "";
-  if(!items.length){ list.innerHTML = '<div class="empty">مفيش رقم بالاسم ده. جرّب كلمة تانية، أو اتصل بـ 122.</div>'; return; }
-  let last = "";
-  for(const x of items){
-    if(x.g !== last){ const h=document.createElement("div"); h.className="group"; h.textContent=x.g; list.appendChild(h); last=x.g; }
-    const r = document.createElement("div"); r.className="row";
-    r.innerHTML = `<div class="name"><span>${x.n}</span>${x.p?'<br><span class="pending">قيد المراجعة</span>':''}</div>
-      <a class="n" href="tel:${x.d}">${x.d}</a>
-      <button type="button" data-d="${x.d}">نسخ</button>`;
-    list.appendChild(r);
-  }
-}
-list.addEventListener("click", e => {
-  const b = e.target.closest("button[data-d]"); if(!b) return;
-  const d = b.dataset.d;
-  const done = () => { b.textContent = "اتنسخ"; setTimeout(()=>b.textContent="نسخ",1500); };
-  try{ navigator.clipboard.writeText(d).then(done, ()=>{ b.textContent = d; }); }catch(_){ b.textContent = d; }
-});
-document.getElementById("q").addEventListener("input", e => render(e.target.value));
-render("");
-
-const where = document.getElementById("where");
-let coords = null;
-function waLink(kind){
-  const w = where.value.trim();
-  const map = coords ? " موقعي على الخريطة: https://maps.google.com/?q=" + coords.lat.toFixed(6) + "," + coords.lng.toFixed(6) : "";
-  const msg = kind === "safe"
-    ? "أنا بخير الحمد لله، ما تقلقوش." + (w ? " أنا في: " + w + "." : "") + map
-    : "محتاج مساعدة دلوقتي." + (w ? " أنا في: " + w + "." : (coords ? "" : " كلموني حالاً.")) + map;
-  return "https://wa.me/?text=" + encodeURIComponent(msg);
-}
-function refresh(){ document.getElementById("btn-safe").href = waLink("safe"); document.getElementById("btn-help").href = waLink("help"); }
-where.addEventListener("input", refresh); refresh();
-
-// GPS: works when the page is opened directly (its own website). Inside an embedded frame the browser refuses location, so the buttons send the typed place instead.
-const canGps = !!navigator.geolocation && window.top === window && window.isSecureContext;
-function getPos(ms){
-  return new Promise(res => {
-    try{
-      navigator.geolocation.getCurrentPosition(
-        p => res({lat:p.coords.latitude, lng:p.coords.longitude}),
-        () => res(null),
-        {enableHighAccuracy:true, timeout:ms, maximumAge:60000});
-    }catch(_){ res(null); }
-  });
-}
-if(canGps && navigator.permissions){
-  navigator.permissions.query({name:"geolocation"}).then(s => { if(s.state === "granted") getPos(8000).then(c => { if(c){ coords = c; refresh(); } }); }).catch(()=>{});
-}
-for(const id of ["btn-safe","btn-help"]){
-  const b = document.getElementById(id);
-  b.addEventListener("click", e => {
-    if(!canGps || coords) return; // link opens as is
-    e.preventDefault();
-    const label = b.textContent; b.textContent = "بنحدد موقعك…";
-    getPos(5000).then(c => {
-      if(c) coords = c;
-      refresh(); b.textContent = label;
-      location.assign(b.href);
-    });
-  });
-}
-
-// Install: Android/Chrome shows a real install button; iPhone shows the Share → Add to Home Screen steps.
-(function(){
-  const box = document.getElementById("install");
-  const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true || document.referrer.startsWith("android-app://");
-  let later = false; try{ later = localStorage.getItem("sos-install-later") === "1"; }catch(_){}
-  if(standalone || later) return;
-  const hide = () => { box.hidden = true; try{ localStorage.setItem("sos-install-later","1"); }catch(_){} };
-  box.querySelectorAll("[data-later]").forEach(b => b.addEventListener("click", hide));
-  const ua = navigator.userAgent;
-  const isIOS = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-  if(isIOS){ document.getElementById("inst-ios").hidden = false; box.hidden = false; return; }
-  let deferred = null;
-  window.addEventListener("beforeinstallprompt", e => {
-    e.preventDefault(); deferred = e;
-    document.getElementById("inst-android").hidden = false; box.hidden = false;
-  });
-  document.getElementById("btn-install").addEventListener("click", async () => {
-    if(!deferred) return;
-    deferred.prompt();
-    try{ await deferred.userChoice; }catch(_){}
-    deferred = null; box.hidden = true;
-  });
-  window.addEventListener("appinstalled", () => { box.hidden = true; });
-})();
-
-// Live incident card: incident.json in the public repo. Rendered with textContent only (never HTML).
-// Offline, the service worker returns the last copy it saved; with nothing saved, the HTML above stays.
-(function(){
-  const URL_JSON = "https://raw.githubusercontent.com/korionx/egypt-sos/main/incident.json";
-  const $ = id => document.getElementById(id);
-  const okUrl = u => typeof u === "string" && /^https:\/\/[^\s"<>]+$/.test(u);
-  const fmt = iso => {
-    const d = new Date(iso); if (isNaN(d)) return "";
-    try { return new Intl.DateTimeFormat("ar-EG-u-nu-latn", {weekday:"long", day:"numeric", month:"long", hour:"numeric", minute:"2-digit", timeZone:"Africa/Cairo"}).format(d); }
-    catch(_) { return d.toLocaleString(); }
-  };
-  const link = (href, label) => { const a = document.createElement("a"); a.href = href; a.target = "_blank"; a.rel = "noopener"; a.textContent = label; return a; };
-  function render(d){
-    const box = $("incident");
-    if (!d.active) { box.hidden = true; return; }
-    box.hidden = false;
-    if (d.tag) $("inc-tag").textContent = d.tag;
-    if (d.title) $("h-inc").textContent = d.title;
-    const ul = $("inc-items"); ul.textContent = "";
-    for (const it of (d.items || [])) {
-      if (!it || !it.text) continue;
-      const li = document.createElement("li"); li.textContent = it.text + " ";
-      if (okUrl(it.source_url)) { const a = link(it.source_url, "(المصدر)"); a.className = "src"; li.appendChild(a); }
-      ul.appendChild(li);
-    }
-    const h = d.help || {};
-    const need = h.blood_needed === true ? "yes" : h.blood_needed === false ? "no" : "unknown";
-    $("inc-blood").dataset.need = need;
-    $("bl-head").textContent = need === "yes" ? "التبرع بالدم: مطلوب متبرعين" : need === "no" ? "التبرع بالدم: مش محتاجين دلوقتي" : "التبرع بالدم: مفيش طلب رسمي لحد دلوقتي";
-    $("bl-statement").textContent = h.statement || (need === "unknown" ? "استنى لحد ما وزارة الصحة تطلب، وما تروحش المستشفيات من نفسك." : "");
-    const wh = $("bl-where"); wh.textContent = "";
-    for (const w of (need === "yes" ? (h.where || []) : [])) {
-      if (!w || !w.name) continue;
-      const li = document.createElement("li"); li.textContent = w.name + (w.address ? "، " + w.address : "") + " ";
-      if (w.phone && /^[0-9+]{3,15}$/.test(w.phone)) { const a = document.createElement("a"); a.className = "n"; a.href = "tel:" + w.phone; a.textContent = w.phone; li.appendChild(a); }
-      wh.appendChild(li);
-    }
-    wh.hidden = !wh.children.length;
-    const src = $("bl-src"); src.textContent = h.said_by ? "قالها: " + h.said_by + ". " : "";
-    if (okUrl(h.source_url)) { src.appendChild(link(h.source_url, "المصدر")); src.appendChild(document.createTextNode(". ")); }
-    if (h.checked_at) src.appendChild(document.createTextNode("اتأكدنا منها: " + fmt(h.checked_at) + "."));
-    if (d.updated_at) $("inc-time").textContent = "آخر تحديث: " + fmt(d.updated_at) + " بتوقيت القاهرة. كل معلومة هنا من مصدر رسمي أو منقولة عنه، والمصدر جنبها.";
-  }
-  fetch(URL_JSON, {cache: "no-store"})
-    .then(r => r.ok ? r.json() : null)
-    .then(d => { if (d && d.schema === 1) render(d); })
-    .catch(() => {});
-})();
-
-// Offline: keep the page and numbers available without internet after the first visit.
-if ("serviceWorker" in navigator && window.isSecureContext) {
-  window.addEventListener("load", () => navigator.serviceWorker.register("/sos/sw.js", { scope: "/sos/" }).catch(() => {}));
-}
-</script>
+<script type="module" src="app.mjs"></script>
+<script defer src="install.js"></script>
 </body>
 </html>
