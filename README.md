@@ -38,6 +38,11 @@ Static files only. Serve the folder at `/sos/` on any static host (the service w
 
 No cookies, no accounts, no server of our own. The live site counts anonymous visits with Vercel Web Analytics (cookieless). The incident card is fetched from GitHub, which sees your IP address. Your location goes only into the WhatsApp message you choose to send. See `privacy.html`.
 
+## Android
+
+The Play Store app wraps this page. See [`android/`](android/README.md).
+Privacy policy: [`privacy.html`](privacy.html) (live at https://www.eslamosama.com/sos/privacy.html).
+
 ## License
 
 MIT
