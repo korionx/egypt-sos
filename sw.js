@@ -1,57 +1,44 @@
-// Offline support for طوارئ مصر السريع.
-// Pages: network first (so the live incident card is fresh), cached copy when offline.
-// Live incident card (incident.json on GitHub): network first, last saved copy when offline.
-// Static files and Google Fonts: cache first, refreshed in the background.
-const VERSION = "sos-v6";
-const INCIDENT = "https://raw.githubusercontent.com/korionx/egypt-sos/main/incident.json";
-const CORE = ["./", "./index.html", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png", "./privacy.html"];
-
-self.addEventListener("install", e => {
-  e.waitUntil(caches.open(VERSION).then(c => c.addAll(CORE).then(() => c.add(INCIDENT).catch(() => {}))).then(() => self.skipWaiting()));
-});
-
-self.addEventListener("activate", e => {
-  e.waitUntil(
-    caches.keys().then(keys => Promise.all(keys.filter(k => k !== VERSION).map(k => caches.delete(k))))
-      .then(() => self.clients.claim())
-  );
-});
-
-self.addEventListener("fetch", e => {
-  const req = e.request;
-  if (req.method !== "GET") return;
-  const url = new URL(req.url);
-
-  if (req.mode === "navigate") {
-    // One cache entry per page, query ignored: /sos/ and /sos/?source=app (the installed app) share a copy.
-    const key = url.origin + url.pathname;
-    e.respondWith(
-      fetch(req).then(res => {
-        if (res.ok) { const copy = res.clone(); caches.open(VERSION).then(c => c.put(key, copy)); }
-        return res;
-      }).catch(() => caches.match(key).then(r => r || caches.match("./index.html")))
-    );
+// Only SOS-owned caches are removed. Navigations fall back within 1.5 seconds.
+const VERSION = 'sos-v7';
+const INCIDENT = 'https://raw.githubusercontent.com/korionx/egypt-sos/main/incident.json';
+const SCOPE = new URL('./', self.location).href;
+const CORE = ['./', './index.html', './app.mjs', './core.mjs', './install.js', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/maskable-512.png', './privacy.html', './sources.html'];
+self.addEventListener('install', e => e.waitUntil(caches.open(VERSION).then(c => c.addAll(CORE)).then(() => self.skipWaiting())));
+self.addEventListener('activate', e => e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => /^sos-v\d+$/.test(k) && k !== VERSION).map(k => caches.delete(k)))).then(() => self.clients.claim())));
+async function incidentValid(r) {
+  try { const d = await r.clone().json(); return d?.schema === 1 && typeof d.active === 'boolean' && (!d.active || (typeof d.title === 'string' && Number.isFinite(Date.parse(d.updated_at)) && Array.isArray(d.items) && d.items.every(i => typeof i?.text === 'string' && /^https:\/\//.test(i.source_url)))); }
+  catch { return false; }
+}
+async function cachedIncident(r) {
+  const headers = new Headers(r.headers); headers.set('X-SOS-Cached', '1');
+  return new Response(await r.arrayBuffer(), {status:r.status,headers});
+}
+self.addEventListener('fetch', e => {
+  const req = e.request; if (req.method !== 'GET') return;
+  const url = new URL(req.url), incident = url.href === INCIDENT;
+  if (!incident && !url.href.startsWith(SCOPE)) return;
+  const key = incident ? INCIDENT : url.origin + url.pathname;
+  if (incident || req.mode === 'navigate') {
+    const network = (async () => {
+      const r = await fetch(req); if (!r.ok || (incident && !await incidentValid(r))) throw Error('Bad response');
+      const c = await caches.open(VERSION); await c.put(key, r.clone()); return r;
+    })();
+    e.waitUntil(network.catch(() => {}));
+    e.respondWith((async () => {
+      const cache = await caches.open(VERSION), hit = await cache.match(key);
+      let timer;
+      try { return await Promise.race([network, new Promise((_, reject) => { timer = setTimeout(() => reject(Error('Slow network')), incident ? 3000 : 1500); })]); }
+      catch {
+        if (hit) return incident ? cachedIncident(hit) : hit;
+        if (!incident && (url.pathname === new URL(SCOPE).pathname || url.pathname.endsWith('/index.html'))) {
+          const home = await cache.match(new URL('./index.html', SCOPE).href); if (home) return home;
+        }
+        return Response.error();
+      } finally { clearTimeout(timer); }
+    })());
     return;
   }
-
-  if (url.origin + url.pathname === INCIDENT) {
-    e.respondWith(
-      fetch(req.url, { cache: "no-store", mode: "cors" }).then(res => {
-        if (res.ok) { const copy = res.clone(); caches.open(VERSION).then(c => c.put(INCIDENT, copy)); }
-        return res;
-      }).catch(() => caches.match(INCIDENT).then(r => r || Response.error()))
-    );
-    return;
-  }
-
-  const sameScope = url.origin === location.origin && url.pathname.startsWith(new URL("./", location).pathname);
-  const isFont = url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com";
-  if (!sameScope && !isFont) return;
-
-  e.respondWith(
-    caches.open(VERSION).then(c => c.match(req).then(hit => {
-      const net = fetch(req).then(res => { if (res.ok || res.type === "opaque") c.put(req, res.clone()); return res; }).catch(() => hit);
-      return hit || net;
-    }))
-  );
+  const network = fetch(req).then(async r => { if (r.ok) { const c = await caches.open(VERSION); await c.put(key, r.clone()); } return r; });
+  e.waitUntil(network.catch(() => {}));
+  e.respondWith(caches.open(VERSION).then(async c => (await c.match(key)) || network).catch(() => Response.error()));
 });

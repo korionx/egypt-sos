@@ -1,48 +1,42 @@
 # طوارئ مصر السريع · Egypt SOS
 
-صفحة واحدة بالعربي لأوقات الطوارئ في مصر. شغالة على أي موبايل من غير تنزيل تطبيق.
+[افتح الصفحة / Live](https://www.eslamosama.com/sos/) · [Sources](https://www.eslamosama.com/sos/sources.html) · [Privacy](https://www.eslamosama.com/sos/privacy.html)
 
-- أزرار اتصال كبيرة: الإسعاف 123، المطافي 180، النجدة 122، شرطة السياحة 126.
-- «أنا بخير» و«محتاج مساعدة»: بتفتح واتساب برسالة جاهزة فيها موقعك على Google Maps.
-- كارت «حدث جاري» بيتحمّل من `incident.json` (مستشفيات، هل محتاجين تبرع بالدم ولا لأ، طرق)، وكل سطر جنبه مصدره.
-- «عايز تساعد؟»: نصايح ثابتة (ما تزحمش المستشفيات، ما تبعتش فلوس لأفراد، اتأكد من أي طلب دم).
-- دليل أرقام فيه بحث.
+صفحة عربية خفيفة: أرقام اتصال كبيرة، رسائل واتساب للأهل، ودليل أرقام يعمل حتى بدون JavaScript. مبادرة شخصية مستقلة من إسلام أسامة؛ لا تمثّل الحكومة أو خدمات الطوارئ.
 
-Live: https://eslamosama.com/sos
+- Calls open the dialer immediately. All 24 directory numbers are present in HTML.
+- Family buttons open a WhatsApp draft. Location is optional/off by default, with a four-second maximum wait, skip and cancel. Opening the link transmits its text to WhatsApp before sending to a recipient.
+- Search normalizes Arabic spelling, diacritics and Arabic/Persian numerals.
+- After the first successful load, numbers remain available offline. Calls still need telephone service; WhatsApp needs internet.
+- Incident facts have sources and dates. Old/offline information is explicitly historical, with a separately dated blood statement. No live-status claim is embedded in HTML.
 
-## Why
+## Maintain and test
 
-Most emergency-number apps in Egypt are directories that nobody installs before they need them. This is a link you can share in a Facebook comment or WhatsApp group the minute something happens.
+Edit `numbers.json`, then run:
 
-## Numbers
+```sh
+node scripts/build.mjs
+node --test tests/*.test.mjs
+```
 
-`123`, `180`, `122`, `126` are confirmed from the UK FCDO Egypt travel advice (Nov 2026). Numbers marked **قيد المراجعة** in the page are not yet confirmed from an official source. Corrections with a source link are very welcome: open an issue or a pull request.
+Serve these static files at `/sos/`; GPS/service workers require HTTPS (localhost works for development). No package install is required for the SOS app or its tests. The deployed copy is in the private site repository's `public/sos/`. Keep `index.html`, `app.mjs`, `core.mjs`, `install.js`, `sw.js`, `manifest.webmanifest`, `privacy.html`, `sources.html`, and `icons/` identical. Bump the service-worker version for releases.
 
-## Live incident card (`incident.json`)
+## Incident updates
 
-The page fetches `incident.json` from this repo's `main` branch (raw.githubusercontent.com, about 5 minutes of CDN caching). Offline, the service worker serves the last copy it saved; with none saved, the page shows the card built into the HTML.
+`incident.json` is fetched from this public repository's main branch. This is independently live: merging a data change affects the site without rebuilding it.
 
-Rules for every change to `incident.json`:
+- Every fact requires an official source or a major outlet quoting a named official. No unsourced social-media claims.
+- Keep publication dates in the text. `updated_at` records editorial review; it does not make an old statement new.
+- `help.checked_at` must reflect an actual review of that blood statement. Do not refresh it when changing other items.
+- `blood_needed` is true only for an official donor request, false only for an official statement of no need, and null when unknown. `where` may only contain locations named by the request.
+- The six-hour UI freshness limit is an engineering safeguard, not a promise of monitoring or a guarantee of current conditions.
+- Set `active:false` when a source-based editorial decision retires the incident. No incident appears if no valid data is available.
+- Use reviewable PRs with evidence and preserve source history. User-authorized maintainer publishing does not waive evidence requirements.
 
-- Facts come only from official sources (Ministry of Health, the governorate, Egyptian Red Crescent, civil protection) or major outlets quoting them by name. Every fact has a `source_url`; plain safety advice may leave it empty.
-- `help.blood_needed` is `true` only when an official body asks for donors, `false` when an official says there is no need, and `null` when nobody official has said anything. Never a guess.
-- `where` lists blood banks or hospitals only if the official request names them.
-- Set `"active": false` to hide the card when the incident is over.
-- Every change is a pull request that a person approves before it goes live.
+## Android and research
 
-## Run it
+The Android TWA wraps the live site: [Android files](android/README.md). Signing keys and passwords must never enter this repository.
 
-Static files only. Serve the folder at `/sos/` on any static host (the service worker and manifest use `/sos/` paths). GPS needs HTTPS.
+[Research, decisions and verification](docs/research-and-release-2026-11-28.md). The site uses cookieless Vercel aggregate visit analytics; no call-tap or message-content analytics. See the bilingual privacy policy for provider processing and retention.
 
-## Privacy
-
-No cookies, no accounts, no server of our own. The live site counts anonymous visits with Vercel Web Analytics (cookieless). The incident card is fetched from GitHub, which sees your IP address. Your location goes only into the WhatsApp message you choose to send. See `privacy.html`.
-
-## Android
-
-The Play Store app wraps this page. See [`android/`](android/README.md).
-Privacy policy: [`privacy.html`](privacy.html) (live at https://www.eslamosama.com/sos/privacy.html).
-
-## License
-
-MIT
+MIT license.
